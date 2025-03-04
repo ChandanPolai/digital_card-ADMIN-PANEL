@@ -1,0 +1,76 @@
+<div class="container mt-4">
+    <div class="card">
+      <div class="card-body">
+        <!-- Title and Action Buttons -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="mb-0">User List</h3>
+          <div class="d-flex gap-2">
+            <!-- Export to Excel Button with Modal Trigger -->
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportModal">
+              <i class="ri-file-excel-2-line"></i> Export to Excel
+            </button>
+          </div>
+        </div>
+  
+        <!-- Search Bar and Page Limit Dropdown -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (input)="onSearch()">
+          <div class="ms-3">
+            <select class="form-select" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+  
+        <!-- User List Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-striped">
+            <thead class="table-light">
+              <tr>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">Mobile Number</th>
+                <th class="text-center">Joining Date</th>
+                <th width="10%" class="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody style="font-size: 12px;">
+              @if(isLoading){
+                <tr>
+                  <td class="text-center" colspan="5">
+                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </td>
+                </tr>
+              }
+              @if(isLoading == false && users!=null && users.docs.length > 0){
+              <!-- <tr *ngFor="let user of users | paginate: { id: 'pager', itemsPerPage: itemsPerPage, currentPage: p, totalItems: totalItems }">
+                <td class="text-center">{{ user.name }}</td>
+                <td class="text-center">{{ user.email }}</td>
+                <td class="text-center">{{ user.mobileNumber }}</td>
+                <td class="text-center">{{ user.joiningDate | date:'mediumDate' }}</td>
+                <td class="text-center">
+                  <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(user)">
+                    <i class="ri-edit-box-line"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user._id)">
+                    <i class="ri-delete-bin-line"></i>
+                  </button>
+                </td>
+              </tr> -->
+              }
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Pagination Controls -->
+        <div class="text-end">
+          <pagination-controls (pageChange)="pageChangeEvent($event)" id="pager" (pageBoundsCorrection)="pageChangeEvent($event)" ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
