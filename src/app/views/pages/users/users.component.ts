@@ -3,11 +3,12 @@ import { Component, type OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AuthService } from 'src/app/services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [FormsModule, DatePipe, NgxPaginationModule],
+  imports: [FormsModule, DatePipe, NgxPaginationModule, CommonModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })
@@ -74,6 +75,11 @@ export class UsersComponent implements OnInit {
     // Implement logic to open an edit modal
     console.log('Edit user:', user);
   }
+
+  trackByUserId(index: number, user: any): string {
+    return user._id;
+  }
+  
 
   // Delete a user
   // deleteUser(userId: string): void {

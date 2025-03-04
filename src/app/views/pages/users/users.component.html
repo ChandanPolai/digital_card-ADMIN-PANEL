@@ -11,20 +11,17 @@
           </button>
         </div>
       </div>
-      
+
       <!-- Search Bar and Page Limit Dropdown -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (input)="onSearch()">
         <div class="ms-3">
           <select class="form-select" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+            <option *ngFor="let option of [10, 25, 50, 100]" [value]="option">{{ option }}</option>
           </select>
         </div>
       </div>
-      
+
       <!-- User List Table -->
       <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped">
@@ -39,47 +36,44 @@
             </tr>
           </thead>
           <tbody style="font-size: 12px;">
-            @if(isLoading){
-              <tr>
-                <td class="text-center" colspan="6">
-                  <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                </td>
-              </tr>
-            }
-            @if(!isLoading && users && users.docs && users.docs.length > 0){
-              @for(user of users.docs; track user._id){
-                <tr>
-                  <td class="text-center">{{ user.name }}</td>
-                  <td class="text-center">{{ user.emailId }}</td>
-                  <td class="text-center">{{ user.mobile }}</td>
-                  <td class="text-center">
-                    <span class="badge {{ user.isVerified ? 'bg-success' : 'bg-warning' }}">
-                      {{ user.isVerified ? 'Verified' : 'Not Verified' }}
-                    </span>
-                  </td>
-                  <td class="text-center">{{ user.createdAt | date:'mediumDate' }}</td>
-                  <td class="text-center">
-                    <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(user)">
-                      <i class="ri-edit-box-line"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger" >
-                      <i class="ri-delete-bin-line"></i>
-                    </button>
-                  </td>
-                </tr>
-              }
-            }
-            @if(!isLoading && (!users || !users.docs || users.docs.length === 0)){
-              <tr>
-                <td class="text-center" colspan="6">No users found</td>
-              </tr>
-            }
+            <!-- Loading Spinner -->
+            <tr *ngIf="isLoading">
+              <td class="text-center" colspan="6">
+                <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </td>
+            </tr>
+
+            <!-- User Data -->
+            <tr *ngFor="let user of users?.docs | paginate: { id: 'pager', itemsPerPage: itemsPerPage, currentPage: p, totalItems: totalItems }; trackBy: trackByUserId">
+              <td class="text-center">{{ user.name }}</td>
+              <td class="text-center">{{ user.email }}</td>
+              <td class="text-center">{{ user.mobile }}</td>
+              <td class="text-center">
+                <span class="badge" [ngClass]="{ 'bg-success': user.isVerified, 'bg-warning': !user.isVerified }">
+                  {{ user.isVerified ? 'Verified' : 'Not Verified' }}
+                </span>
+              </td>
+              <td class="text-center">{{ user.createdAt | date:'mediumDate' }}</td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(user)">
+                  <i class="ri-edit-box-line"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </td>
+            </tr>
+
+            <!-- No Users Found -->
+            <tr *ngIf="!isLoading && (!users || !users.docs || users.docs.length === 0)">
+              <td class="text-center" colspan="6">No users found</td>
+            </tr>
           </tbody>
         </table>
       </div>
-      
+
       <!-- Pagination Controls -->
       <div class="d-flex justify-content-between align-items-center mt-3">
         <div>
@@ -87,8 +81,8 @@
         </div>
         <div>
           <pagination-controls 
+            id="pager"
             (pageChange)="pageChangeEvent($event)" 
-            id="pager" 
             [responsive]="true"
             [previousLabel]="'Previous'" 
             [nextLabel]="'Next'"
