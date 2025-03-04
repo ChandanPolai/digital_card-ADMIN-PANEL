@@ -31,6 +31,7 @@
               <th class="text-center">Email</th>
               <th class="text-center">Mobile Number</th>
               <th class="text-center">Verified</th>
+              <th class="text-center">Active</th>
               <th class="text-center">Created Date</th>
               <th width="10%" class="text-center">Action</th>
             </tr>
@@ -48,22 +49,33 @@
             <!-- User Data -->
             <tr *ngFor="let user of users?.docs | paginate: { id: 'pager', itemsPerPage: itemsPerPage, currentPage: p, totalItems: totalItems }; trackBy: trackByUserId">
               <td class="text-center">{{ user.name }}</td>
-              <td class="text-center">{{ user.email }}</td>
+              <td class="text-center">{{ user.emailId }}</td>
               <td class="text-center">{{ user.mobile }}</td>
               <td class="text-center">
                 <span class="badge" [ngClass]="{ 'bg-success': user.isVerified, 'bg-warning': !user.isVerified }">
                   {{ user.isVerified ? 'Verified' : 'Not Verified' }}
                 </span>
               </td>
+              <td class="text-center">
+                <span class="badge" [ngClass]="{ 'bg-success': user.isActive, 'bg-warning': !user.isActive }">
+                  {{ user.isActive ? 'Active' : 'Not Active' }}
+                </span>
+              </td>
               <td class="text-center">{{ user.createdAt | date:'mediumDate' }}</td>
               <td class="text-center">
-                <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(user)">
-                  <i class="ri-edit-box-line"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                  <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(user)">
+                    <i class="ri-edit-box-line"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#companyModal" (click)="showCompany(user)">
+                    <i class="ri-eye-line"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="ri-delete-bin-line"></i>
+                  </button>
+                </div>
               </td>
+              
             </tr>
 
             <!-- No Users Found -->
@@ -93,3 +105,23 @@
     </div>
   </div>
 </div>
+
+
+<!-- Bootstrap Modal for Company Details -->
+<div class="modal fade" id="companyModal" tabindex="-1" aria-labelledby="companyModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">  <!-- Yeh class add ki -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="companyModalLabel">Company Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="selectedCompany">{{ selectedCompany }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

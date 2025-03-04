@@ -19,6 +19,7 @@ export class UsersComponent implements OnInit {
   p: number = 1; // Current page number
   totalItems: number = 0; // Total number of items
   users: any = { docs: [] }; // Initialize with empty docs array
+  selectedCompany: string | null = null;
 
   constructor(private service: AuthService) { }
 
@@ -37,7 +38,6 @@ export class UsersComponent implements OnInit {
       
       if(results != null) {
         this.users = results;
-        // Set totalItems from the API response
         this.totalItems = results.totalDocs || (results.docs ? results.docs.length : 0);
       } else {
         this.users = { docs: [] };
@@ -54,47 +54,32 @@ export class UsersComponent implements OnInit {
 
   // Handle search input
   onSearch(): void {
-    this.p = 1; // Reset to the first page when searching
-    this.fetchUsers(); // Fetch users based on the search term
+    this.p = 1; 
+    this.fetchUsers(); 
   }
 
   // Handle items per page change
   onItemsPerPageChange(): void {
-    this.p = 1; // Reset to the first page when changing items per page
+    this.p = 1;
     this.fetchUsers();
   }
 
-  // Handle page change event
-  pageChangeEvent(page: number): void {
+    pageChangeEvent(page: number): void {
     this.p = page;
     this.fetchUsers();
   }
 
-  // Open edit modal for a user
+  
   openEditModal(user: any): void {
-    // Implement logic to open an edit modal
-    console.log('Edit user:', user);
   }
 
   trackByUserId(index: number, user: any): string {
     return user._id;
   }
+ 
+  showCompany(user: any) {
+    this.selectedCompany = user.companies && user.companies.length > 0 ? user.companies : "There is no company";
+  }
   
-
-  // Delete a user
-  // deleteUser(userId: string): void {
-  //   if (confirm('Are you sure you want to delete this user?')) {
-  //     this.service.deleteUser(userId).then(() => {
-  //       this.fetchUsers(); // Refresh the user list after deletion
-  //     }).catch((error) => {
-  //       console.error('Error deleting user:', error);
-  //     });
-  //   }
-  // }
-
-
-  
-
-
 
 }
