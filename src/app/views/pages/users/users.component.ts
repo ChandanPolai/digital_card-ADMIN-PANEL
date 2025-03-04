@@ -17,6 +17,7 @@ export class UsersComponent implements OnInit {
   itemsPerPage: number = 10; // Default items per page
   p: number = 1; // Current page number
   totalItems: number = 0; // Total number of items
+  users: any = { docs: [] }; // Initialize with empty docs array
 
   constructor(private service: AuthService) { }
 
@@ -24,13 +25,29 @@ export class UsersComponent implements OnInit {
     this.fetchUsers();
   }
 
-  users: any;
   fetchUsers = async () => {
     this.isLoading = true;
-    let results = await this.service.getUsers({ search: this.searchTerm.trim(), page: this.p, limit: this.itemsPerPage });
-    if(results!=null){
+    try {
+      let results = await this.service.getUsers({ 
+        search: this.searchTerm.trim(), 
+        page: this.p, 
+        limit: this.itemsPerPage 
+      });
+      
+      if(results != null) {
+        this.users = results;
+        // Set totalItems from the API response
+        this.totalItems = results.totalDocs || (results.docs ? results.docs.length : 0);
+      } else {
+        this.users = { docs: [] };
+        this.totalItems = 0;
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      this.users = { docs: [] };
+      this.totalItems = 0;
+    } finally {
       this.isLoading = false;
-      this.users = results;
     }
   }
 
@@ -59,16 +76,19 @@ export class UsersComponent implements OnInit {
   }
 
   // Delete a user
-  deleteUser(userId: string): void {
-    // if (confirm('Are you sure you want to delete this user?')) {
-    //   this.userService.deleteUser(userId).subscribe(
-    //     () => {
-    //       this.fetchUsers(); // Refresh the user list after deletion
-    //     },
-    //     (error) => {
-    //       console.error('Error deleting user:', error);
-    //     }
-    //   );
-    // }
-  }
+  // deleteUser(userId: string): void {
+  //   if (confirm('Are you sure you want to delete this user?')) {
+  //     this.service.deleteUser(userId).then(() => {
+  //       this.fetchUsers(); // Refresh the user list after deletion
+  //     }).catch((error) => {
+  //       console.error('Error deleting user:', error);
+  //     });
+  //   }
+  // }
+
+
+  
+
+
+
 }
