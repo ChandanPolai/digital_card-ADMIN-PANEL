@@ -11,20 +11,17 @@
           </button>
         </div>
       </div>
-      
+
       <!-- Search Bar and Page Limit Dropdown -->
       <div class="d-flex justify-content-between align-items-center mb-4">
         <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (input)="onSearch()">
         <div class="ms-3">
           <select class="form-select" [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+            <option *ngFor="let option of [10, 25, 50, 100]" [value]="option">{{ option }}</option>
           </select>
         </div>
       </div>
-      
+
       <!-- User List Table -->
       <div class="table-responsive">
         <table class="table table-bordered table-hover">
@@ -35,6 +32,7 @@
               <th>Email</th>
               <th class="text-center">Mobile Number</th>
               <th class="text-center">Verified</th>
+              <th class="text-center">Active</th>
               <th class="text-center">Created Date</th>
               <th width="10%" class="text-center">Action</th>
             </tr>
@@ -78,7 +76,7 @@
           </tbody>
         </table>
       </div>
-      
+
       <!-- Pagination Controls -->
       <div class="d-flex justify-content-between align-items-center mt-3">
         <div>
@@ -92,3 +90,23 @@
     </div>
   </div>
 </div>
+
+
+<!-- Bootstrap Modal for Company Details -->
+<div class="modal fade" id="companyModal" tabindex="-1" aria-labelledby="companyModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">  <!-- Yeh class add ki -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="companyModalLabel">Company Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="selectedCompany">{{ selectedCompany }}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+

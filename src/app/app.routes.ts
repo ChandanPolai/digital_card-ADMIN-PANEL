@@ -4,7 +4,7 @@ import { HomeLayoutComponent } from './views/partials/home-layout/home-layout.co
 import { DashboardComponent } from './views/pages/dashboard/dashboard.component';
 import { CreateCardComponent } from './views/pages/create-card/create-card.component';
 import { UsersComponent } from './views/pages/users/users.component';
-
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'auth/login' },
@@ -12,6 +12,7 @@ export const routes: Routes = [
   {
     path: '',
     component: HomeLayoutComponent,
+    canActivate: [authGuard], // Yahan guard add karo
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'create-card', component: CreateCardComponent },
