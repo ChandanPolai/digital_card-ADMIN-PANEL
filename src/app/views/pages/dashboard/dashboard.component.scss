@@ -1,3 +1,46 @@
-:host {
-  display: block;
+.card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+.card-body {
+  padding: 2rem;
+}
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+}
+.icon-wrapper i {
+  font-size: 1.5rem;
+  color: white;
+}
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+.card-text {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 0;
+}
+.gradient-1 {
+  // background: linear-gradient(135deg, #6a11cb, #2575fc);
+  background-image: linear-gradient(to top, #feada6 0%, #f5efef 100%);
+}
+.gradient-2 {
+  // background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background-image: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
 }

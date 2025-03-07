@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { Component, type OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [FormsModule, DatePipe, NgxPaginationModule],
+  imports: [FormsModule, DatePipe, TitleCasePipe, NgxPaginationModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
 })

@@ -27,11 +27,12 @@
       
       <!-- User List Table -->
       <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped">
+        <table class="table table-bordered table-hover">
           <thead class="table-light">
             <tr>
-              <th class="text-center">Name</th>
-              <th class="text-center">Email</th>
+              <th class="text-center">#</th>
+              <th>Name</th>
+              <th>Email</th>
               <th class="text-center">Mobile Number</th>
               <th class="text-center">Verified</th>
               <th class="text-center">Created Date</th>
@@ -41,7 +42,7 @@
           <tbody style="font-size: 12px;">
             @if(isLoading){
               <tr>
-                <td class="text-center" colspan="6">
+                <td class="text-center" colspan="7">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
@@ -49,23 +50,21 @@
               </tr>
             }
             @if(!isLoading && users && users.docs && users.docs.length > 0){
-              @for(user of users.docs; track user._id){
+              @for(user of users.docs | paginate: { itemsPerPage: itemsPerPage, currentPage: p, totalItems:totalItems }; ; track user._id ){
                 <tr>
-                  <td class="text-center">{{ user.name }}</td>
-                  <td class="text-center">{{ user.emailId }}</td>
+                  <td class="text-center">{{$index+1}}</td>
+                  <td>{{ user.name | titlecase }}</td>
+                  <td>{{ user.emailId }}</td>
                   <td class="text-center">{{ user.mobile }}</td>
                   <td class="text-center">
-                    <span class="badge {{ user.isVerified ? 'bg-success' : 'bg-warning' }}">
+                    <span class="badge {{ user.isVerified ? 'bg-success' : 'bg-danger' }}">
                       {{ user.isVerified ? 'Verified' : 'Not Verified' }}
                     </span>
                   </td>
                   <td class="text-center">{{ user.createdAt | date:'mediumDate' }}</td>
                   <td class="text-center">
-                    <button class="btn btn-sm btn-outline-primary me-1" (click)="openEditModal(user)">
-                      <i class="ri-edit-box-line"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger" >
-                      <i class="ri-delete-bin-line"></i>
+                    <button class="btn btn-sm btn-primary me-1" (click)="openEditModal(user)">
+                      <i class="ri-eye-line"></i>
                     </button>
                   </td>
                 </tr>
@@ -86,13 +85,7 @@
           <span class="text-muted">Showing {{ users?.docs?.length || 0 }} of {{ totalItems }} entries</span>
         </div>
         <div>
-          <pagination-controls 
-            (pageChange)="pageChangeEvent($event)" 
-            id="pager" 
-            [responsive]="true"
-            [previousLabel]="'Previous'" 
-            [nextLabel]="'Next'"
-            (pageBoundsCorrection)="pageChangeEvent($event)">
+          <pagination-controls class="pagination" (pageChange)="pageChangeEvent($event)">
           </pagination-controls>
         </div>
       </div>

@@ -49,8 +49,8 @@ export class SignInComponent implements OnInit {
       try {
         const response = await this.authService.signIn(this.loginForm.value);
         this.isLoading = false;
-        swalHelper.showToast('Login Sucessfully!', 'success');
         if (response) {
+          swalHelper.showToast('Login Sucessfully!', 'success');
           window.location.href = '/dashboard';
         }
       } catch (error) {

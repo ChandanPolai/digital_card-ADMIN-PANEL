@@ -15,7 +15,7 @@ export class AuthService {
   profileData: any;
   selectedBusinessCard: String = '';
   businessCards$: Observable<any[]> = of([]);
-  constructor(private apiManager: ApiManager, private storage: AppStorage) {}
+  constructor(private apiManager: ApiManager, private storage: AppStorage) { }
 
   private getHeaders = () => {
     this.headers = [];
@@ -39,6 +39,66 @@ export class AuthService {
       let response = await this.apiManager.request(
         { url: apiEndpoints.BUSINESS_CARDS, method: 'POST' },
         {},
+        this.headers
+      );
+      if (response.status == 200 && response.data != null) {
+        return response.data;
+      } else {
+        swalHelper.showToast(response.message, 'warning');
+        return null;
+      }
+    } catch (err) {
+      swalHelper.showToast('Something went wrong!', 'error');
+      return null;
+    }
+  }
+
+  async getNewCardId() {
+    try {
+      this.getHeaders();
+      let response = await this.apiManager.request(
+        { url: apiEndpoints.NEW_CARD_ID, method: 'POST' },
+        {},
+        this.headers
+      );
+      if (response.status == 200 && response.data != null) {
+        return response.data;
+      } else {
+        swalHelper.showToast(response.message, 'warning');
+        return null;
+      }
+    } catch (err) {
+      swalHelper.showToast('Something went wrong!', 'error');
+      return null;
+    }
+  }
+
+  async createCard(data: any) {
+    try {
+      this.getHeaders();
+      let response = await this.apiManager.request(
+        { url: apiEndpoints.SAVE_USER_CARD, method: 'POST' },
+        data,
+        this.headers
+      );
+      if (response.status == 200 && response.data != null) {
+        return response.data;
+      } else {
+        swalHelper.showToast(response.message, 'warning');
+        return null;
+      }
+    } catch (err) {
+      swalHelper.showToast('Something went wrong!', 'error');
+      return null;
+    }
+  }
+
+  async getDashboard(data: any) {
+    try {
+      this.getHeaders();
+      let response = await this.apiManager.request(
+        { url: apiEndpoints.GET_DASHBOARD, method: 'POST' },
+        data,
         this.headers
       );
       if (response.status == 200 && response.data != null) {
@@ -153,10 +213,10 @@ export class AuthService {
       this.getHeaders();
       let response = await this.apiManager.request(
         {
-          url: `${apiEndpoints.GET_USERS}?search=${data.search}&page=${data.page}&limit=${data.limit}`, 
-          method: 'POST',  
+          url: `${apiEndpoints.GET_USERS}?search=${data.search}&page=${data.page}&limit=${data.limit}`,
+          method: 'POST',
         },
-        {}, 
+        {},
         this.headers
       );
       if (response.status == 200 && response.data != null) {
@@ -169,8 +229,8 @@ export class AuthService {
       swalHelper.showToast('Something went wrong!', 'error');
       return null;
     }
-}
+  }
 
 
-  
+
 }

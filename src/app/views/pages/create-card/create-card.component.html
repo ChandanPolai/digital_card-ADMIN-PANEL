@@ -19,7 +19,7 @@
                                 @if(currentStep == 1){
                                 <div class="step-body">
                                     <!-- Checkbox Group for Card Type Selection -->
-                                    <div class="mb-4">
+                                    <!-- <div class="mb-4">
                                         <label class="form-label">User want to make? <code>*</code></label>
                                         <div class="row">
                                             @for(type of moduleTypes; track $index){
@@ -33,30 +33,23 @@
                                             </div>
                                             }
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="row g-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="name" class="form-label">Name <code>*</code></label>
                                             <input type="text" class="form-control form-control-lg" id="name" formControlName="name" placeholder="Enter your name">
                                             @if(companyForm.get('name')?.invalid && companyForm.get('name')?.touched){
                                             <div class="text-danger"> Name is required.</div>
                                             }
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="email" class="form-label">Email <code>*</code></label>
-                                            <input type="text" class="form-control form-control-lg" id="email" formControlName="email" placeholder="Enter email address">
+                                            <input type="text" class="form-control form-control-lg" id="email" formControlName="email" placeholder="Enter email address" autocomplete="off">
                                             @if(companyForm.get('email')?.invalid && companyForm.get('email')?.touched){
                                             <div class="text-danger"> Email is required.</div>
                                             }
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="password" class="form-label">Password <code>*</code></label>
-                                            <input type="password" class="form-control form-control-lg" id="password" formControlName="password" placeholder="Enter password">
-                                            @if(companyForm.get('password')?.invalid && companyForm.get('password')?.touched){
-                                            <div class="text-danger"> Password is required.</div>
-                                            }
-                                        </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="mobile" class="form-label">Mobile <code>*</code></label>
                                             <input type="text" class="form-control form-control-lg" id="mobile" formControlName="mobile" placeholder="Enter mobile number">
                                             @if(companyForm.get('mobile')?.invalid && companyForm.get('mobile')?.touched){
@@ -104,41 +97,11 @@
                                     </div>
                                     <div class="text-end mt-3">
                                         <button type="button" class="btn btn-secondary me-2" (click)="prevStep()">Previous</button>
-                                        <button type="button" class="btn btn-primary" (click)="nextStep()" [disabled]="!isStepValid(2)">{{moduleTypes[2].value ? 'Next' : 'Finish'}}</button>
+                                        <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="!isStepValid(2)">Finish</button>
                                     </div>
                                 </div>
                                 }
                             </div>
-
-                            <!-- Step 3: Module Selection -->
-                            @if(moduleTypes[2].value){
-                                <div class="step" [class.active]="currentStep === 3">
-                                    <div class="step-header" (click)="setStep(3)">
-                                        <span class="step-number">3</span>
-                                        <span class="step-title">Website Module Selection</span>
-                                    </div>
-                                    @if(currentStep == 3){
-                                    <div class="step-body">
-                                        <div class="form-group">
-                                            @for (module of WebModules; track $index) {
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" id="module{{ $index }}" [(ngModel)]="module.selected" [ngModelOptions]="{standalone: true}" />
-                                                <label class="form-check-label fw-medium" for="module{{ $index }}">
-                                                    {{ module.name }}
-                                                </label>
-                                                <small class="text-muted d-block mt-1">Description or additional details about {{ module.name }}.</small>
-                                            </div>
-                                            }
-                                        </div>
-                                        <div class="text-end mt-3">
-                                            <button type="button" class="btn btn-secondary me-2" (click)="prevStep()">Previous</button>
-                                            <button type="submit" class="btn btn-primary" [disabled]="companyForm.invalid">Finish</button>
-                                        </div>
-                                    </div>
-                                    }
-                                </div>
-                            }
-
                         </div>
                     </form>
                     }
@@ -172,16 +135,16 @@
                             <div class="nfc-card-back" id="nfcCardBack">
                                 <div class="nfc-card-content">
                                     <div class="nfc-card-header text-start">
-                                        <div style="font-size: 12px;">{{ companyForm?.get('name')?.value || 'Person
-                                            Name' }}</div>
+                                        <div style="font-size: 12px;">{{ companyForm?.get('name')?.value || 'Person Name' }}</div>
                                     </div>
                                     <div class="nfc-card-body d-flex justify-content-center align-items-center">
                                         @if (qrcode.length > 0) {
-                                        <img [src]="qrcode" class="qr-code mt-2">
+                                            <img [src]="qrcode" class="qr-code mt-2">
                                         }
                                     </div>
                                     <div class="nfc-card-header text-end">
-                                        <i data-feather="radio"></i>
+                                        <!-- <i data-feather="radio"></i> -->
+                                        <img [src]="'/assets/images/contactless.png'" width="25" alt="">
                                     </div>
                                 </div>
                             </div>

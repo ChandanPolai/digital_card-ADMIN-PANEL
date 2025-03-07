@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { Component, type OnInit } from '@angular/core';
 
 @Component({
@@ -9,6 +10,20 @@ import { Component, type OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  ngOnInit(): void { }
+  constructor(private authService: AuthService){}
+
+  ngOnInit(): void {
+    this.getDashboard();
+  }
+
+  dashboard:any = { users: "0", businessCards: "0" };
+
+  async getDashboard(){
+    let results = await this.authService.getDashboard({});
+    if(results!=null){
+      this.dashboard.users = results.users || 0;
+      this.dashboard.businessCards = results.businessCards || 0;
+    }
+  }
 
 }

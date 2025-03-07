@@ -13,6 +13,10 @@ class ApiEndpoints {
   public GET_GALLERY: string = `${this.PATH}/business-cards/gallery`;
   public KEYWORDS: string = `${this.PATH}/keywords`;
 
+  public GET_DASHBOARD: string = `${this.PATH}/dashboard`;
+  public NEW_CARD_ID: string = `${this.PATH}/new/card`;
+  public SAVE_USER_CARD: string = `${this.PATH}/user-card/save`;
+
   public GET_USERS: string = `${this.PATH}/users`;
 
 }
